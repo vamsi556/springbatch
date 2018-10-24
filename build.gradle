@@ -1,0 +1,61 @@
+buildscript {
+    repositories {
+        maven { url "http://repo.spring.io/libs-milestone" }
+        mavenLocal()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.3.1.RELEASE")
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse' 
+apply plugin: 'spring-boot'
+
+jar {
+    baseName = 'spring-batch'
+    version =  '1.0'
+}
+
+repositories {
+    mavenCentral()
+    maven { url "http://repo.spring.io/libs-milestone" }
+}
+
+ext {
+    springVersion = "4.1.8.RELEASE"
+    hibernateVersion = "4.3.11.Final"    
+    springBootVervion="1.3.1.RELEASE"
+} 
+configurations {
+    providedRuntime
+}
+bootRepackage {
+     enabled = false
+}
+dependencies {
+ 
+ 	 
+    compile "org.springframework.boot:spring-boot-starter-data-jpa"
+    compile "org.springframework.boot:spring-boot-starter-batch"
+    compile ("org.springframework.boot:spring-boot-starter-web")
+    compile "org.hibernate:hibernate-entitymanager:$hibernateVersion"
+    compile "org.hibernate:hibernate-core:$hibernateVersion"
+    compile 'com.zaxxer:HikariCP:2.4.1' 
+    compile 'mysql:mysql-connector-java:5.1.38'  
+    compile 'org.apache.commons:commons-lang3:3.6'
+    
+    testCompile "org.springframework.boot:spring-boot-starter-test" 
+    
+   
+}
+ 
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.0'
+}
+springBoot {
+  mainClass = "olivecrypto.upi.UpiAppServer"
+}
+test{
+  enabled = false
+}

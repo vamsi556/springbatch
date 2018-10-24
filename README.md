@@ -1,2 +1,2 @@
 # springbatch
-spring batch read file and write into DB
+spring batch read CSV file and write into DB

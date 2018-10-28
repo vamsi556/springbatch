@@ -35,8 +35,6 @@ public class ConfigJpa
 	@Autowired
 	private Environment env;
 
-	//@Value("${init-db:false}")
-	//private String initDatabase;
 	
 	@Bean
 	public PlatformTransactionManager transactionManager()
@@ -44,19 +42,7 @@ public class ConfigJpa
 		EntityManagerFactory factory = entityManagerFactory().getObject();
 		return new JpaTransactionManager(factory);
 	}
-	/*
-	 @Bean(name = "sessionFactory")
-	   public SessionFactory getSessionFactory(DataSource dataSource) {
-			LocalSessionFactoryBuilder sessionBuilder = new LocalSessionFactoryBuilder(
-					dataSource);
-			sessionBuilder.addProperties(getHibernateProperties());
-			sessionBuilder.scanPackages("com.olive.jswitch.imps.model");
-			 
-			SessionFactory sf=sessionBuilder.buildSessionFactory();
-			 
-			return sf;
-		}
-	 */
+ 
 	@Bean
 	public LocalContainerEntityManagerFactoryBean entityManagerFactory()
 	{
@@ -88,8 +74,6 @@ public class ConfigJpa
 		config.setJdbcUrl(env.getRequiredProperty("db.url"));
 		config.setDriverClassName(env.getRequiredProperty("db.driver"));
 		config.setUsername(env.getRequiredProperty("db.username"));
-//		EncryptedPropertyOverriderConfigurer ec=new EncryptedPropertyOverriderConfigurer(); 
-//		config.setPassword(ec.convertPropertyValue(env.getRequiredProperty("db.password")));
 		config.setPassword(env.getRequiredProperty("db.password"));
 	 	config.setConnectionTestQuery(env.getRequiredProperty("db.hikari.jdbc.validationQuery"));
 		config.setAutoCommit(Boolean.getBoolean(env.getRequiredProperty("db.hikari.autoCommit")));
@@ -111,15 +95,4 @@ public class ConfigJpa
 			return properties;
 		}
 	
-	/*@Bean
-	public DataSourceInitializer dataSourceInitializer(DataSource dataSource) 
-	{
-		DataSourceInitializer dataSourceInitializer = new DataSourceInitializer();
-		dataSourceInitializer.setDataSource(dataSource);
-		ResourceDatabasePopulator databasePopulator = new ResourceDatabasePopulator();
-		databasePopulator.addScript(new ClassPathResource("db.sql"));
-		dataSourceInitializer.setDatabasePopulator(databasePopulator);
-		dataSourceInitializer.setEnabled(Boolean.parseBoolean(initDatabase));
-		return dataSourceInitializer;
-	}	*/
-}
+ }

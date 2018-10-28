@@ -2,13 +2,9 @@ package com.cool.domain;
 
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
-/**
- * Contains the information of a single anime
- *
- * @author Michael C Good michaelcgood.com
- */
+ 
 
-public class AnimeDTO {
+public class DataDTO {
 	
 	public String getId() {
 		return id;
@@ -44,11 +40,11 @@ public class AnimeDTO {
 	private String title;
 	private String description;
 	
-	public AnimeDTO(){
+	public DataDTO(){
 		
 	}
 	
-	public AnimeDTO(String id, String title, String description){
+	public DataDTO(String id, String title, String description){
 		this.id = id;
 		this.title = title;
 		this.description = title;

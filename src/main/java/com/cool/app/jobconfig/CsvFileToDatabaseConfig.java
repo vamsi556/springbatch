@@ -21,9 +21,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 
-import com.cool.app.itemprocessor.AnimeProcessor;
+import com.cool.app.itemprocessor.DataProcessor;
 import com.cool.app.joblisteners.JobCompletionNotificationListener;
-import com.cool.domain.AnimeDTO;
+import com.cool.domain.DataDTO;
 
 @EnableBatchProcessing
 @Configuration
@@ -42,15 +42,15 @@ public class CsvFileToDatabaseConfig {
 
     
     @Bean
-    public FlatFileItemReader<AnimeDTO> csvAnimeReader(){
-        FlatFileItemReader<AnimeDTO> reader = new FlatFileItemReader<AnimeDTO>();
-        reader.setResource(new ClassPathResource("animescsv.csv"));
-        reader.setLineMapper(new DefaultLineMapper<AnimeDTO>() {{
+    public FlatFileItemReader<DataDTO> csvAnimeReader(){
+        FlatFileItemReader<DataDTO> reader = new FlatFileItemReader<DataDTO>();
+        reader.setResource(new ClassPathResource("datacsv.csv"));
+        reader.setLineMapper(new DefaultLineMapper<DataDTO>() {{
             setLineTokenizer(new DelimitedLineTokenizer() {{
                 setNames(new String[] { "id", "title", "description" });
             }});
-            setFieldSetMapper(new BeanWrapperFieldSetMapper<AnimeDTO>() {{
-                setTargetType(AnimeDTO.class);
+            setFieldSetMapper(new BeanWrapperFieldSetMapper<DataDTO>() {{
+                setTargetType(DataDTO.class);
             }});
         }});
         return reader;
@@ -58,14 +58,14 @@ public class CsvFileToDatabaseConfig {
 
 
 	@Bean
-	ItemProcessor<AnimeDTO, AnimeDTO> csvAnimeProcessor() {
-		return new AnimeProcessor();
+	ItemProcessor<DataDTO, DataDTO> csvAnimeProcessor() {
+		return new DataProcessor();
 	}
 
 	@Bean
-	public JdbcBatchItemWriter<AnimeDTO> csvAnimeWriter() {
-		 JdbcBatchItemWriter<AnimeDTO> csvAnimeWriter = new JdbcBatchItemWriter<AnimeDTO>();
-		 csvAnimeWriter.setItemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<AnimeDTO>());
+	public JdbcBatchItemWriter<DataDTO> csvAnimeWriter() {
+		 JdbcBatchItemWriter<DataDTO> csvAnimeWriter = new JdbcBatchItemWriter<DataDTO>();
+		 csvAnimeWriter.setItemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<DataDTO>());
 		 csvAnimeWriter.setSql("INSERT INTO animes ( title, description) VALUES ( :title, :description)");
 		 csvAnimeWriter.setDataSource(dataSource);
 	        return csvAnimeWriter;
@@ -77,7 +77,7 @@ public class CsvFileToDatabaseConfig {
 	@Bean
 	public Step csvFileToDatabaseStep() {
 		return stepBuilderFactory.get("csvFileToDatabaseStep")
-				.<AnimeDTO, AnimeDTO>chunk(1)
+				.<DataDTO, DataDTO>chunk(1)
 				.reader(csvAnimeReader())
 				.processor(csvAnimeProcessor())
 				.writer(csvAnimeWriter())

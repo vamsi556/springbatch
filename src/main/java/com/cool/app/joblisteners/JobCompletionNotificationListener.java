@@ -16,7 +16,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
-import com.cool.domain.AnimeDTO;
+import com.cool.domain.DataDTO;
 
 @Component
 public class JobCompletionNotificationListener extends JobExecutionListenerSupport {
@@ -35,14 +35,14 @@ public class JobCompletionNotificationListener extends JobExecutionListenerSuppo
 		if(jobExecution.getStatus() == BatchStatus.COMPLETED) {
 			log.info("============ JOB FINISHED ============ Verifying the results....\n");
 
-			List<AnimeDTO> results = jdbcTemplate.query("SELECT id, title, description FROM animes", new RowMapper<AnimeDTO>() {
+			List<DataDTO> results = jdbcTemplate.query("SELECT id, title, description FROM animes", new RowMapper<DataDTO>() {
 				@Override
-				public AnimeDTO mapRow(ResultSet rs, int row) throws SQLException {
-					return new AnimeDTO(rs.getString(1), rs.getString(2), rs.getString(3));
+				public DataDTO mapRow(ResultSet rs, int row) throws SQLException {
+					return new DataDTO(rs.getString(1), rs.getString(2), rs.getString(3));
 				}
 			});
 
-			for (AnimeDTO AnimeDTO : results) {
+			for (DataDTO AnimeDTO : results) {
 				log.info("Discovered <" + AnimeDTO + "> in the database.");
 			}
 
